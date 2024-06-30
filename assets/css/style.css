@@ -59,11 +59,9 @@ form button:hover {
 }
 
 #music-clicker {
-  width: 720px;
-  height:254px;
-  margin-left: 135px;
-  background-image:url('../img/wave-false.png');
-  background-position: top right;
+  width: 300px;
+  height:20px;
+  background-color:rgba(5, 63, 253, 0.212);
   position:absolute;
   z-index: 3;
 }
@@ -72,32 +70,82 @@ form button:hover {
   background-color:transparent;
   border-right:2px orange solid;
   position:absolute;
-  width: 720px;
-  height:254px;
-  margin-left: 135px;
+  width: 300px;
+  height:20px;
   z-index: 2;
 }
 
 #music-progress {
   position:absolute;
   z-index: 1;
-  background-image:url('../img/wave-true.png');
-  height:254px;
+  background-color:indigo;
+  height:20px;
   width: 0px;
-  margin-left: 135px;
 }
 
 #playlist-table {
-  width: 100%;
+  width: 300px;
+  border:rgb(218, 218, 218) 1px solid;
+  border-radius: 5px 5px 0px 0px;
+  background-color:rgb(245, 245, 245);
+}
+
+#playlist-table div {
+  border-bottom: 1px dashed black;
+}
+
+#playlist-table div span {
+  display: inline-block;
+}
+
+#progress-wrapper {
+  padding-top:10px;
+}
+
+.trackRow span:first-child {
+  cursor:pointer;
+}
+
+
+#playlist-table div:first-child,
+#playlist-table div:last-child,
+#progress-wrapper,
+#progress-wrapper div{
+  border-bottom: none!important;
+}
+
+#playlist-table div:nth-child(3) {
+  padding-top:10px;
 }
 
 .titulo-faixa {
   width: 80%;
   font-size:10px;
+  color:black;
 }
 
 .duracao-faixa {
   width:20%;
   font-size:10px;
   right:0;
+  text-align: right;
+  color:black;
+}
+
+#playlist-table div span:first-child.now-playing {
+  color:indigo;
+  font-weight: bold;
+  font-size:12px;
+}
+
+#playlist-table div span:last-child.now-playing {
+  color:red;
+  font-weight: bold;
+  font-size:12px;
+}
+
+
+#progress-wrapper {
+  display:block;
+  height:20px;
 }
