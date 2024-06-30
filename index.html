@@ -12,13 +12,24 @@
 <body>
 
   <section class="container">
-    <h1>mp3 music player v2</h1>
-    <button id="playpause">play</button><button id="stop">stop</button>
-    <div id="playlist-table"></table>
-    <audio id="music-file" src="assets/mp3/batida1.mp3"></audio>
+    <h1>mp3 music player v3</h1>
+    <button id="playpause">play</button><button id="stop">stop</button><br><br>
+    <div id="player-wrapper">
+      <div id="playlist-table">
+        </table>
+        <audio id="music-file" src="assets/mp3/audio1.mp3"></audio>
+
+      </div>
+
+      <div id="albumArtwork">
+        <div id="artwork-mouseover">OFF</div>
+      </div>
+    </div>
     <div id="progress-wrapper">
-    <div id="music-clicker"></div><div id="music-seeker"></div><div id="music-progress"></div>
-   </div>
+      <div id="music-clicker"></div>
+      <div id="music-seeker"></div>
+      <div id="music-progress"></div>
+    </div>
   </section>
 
   <script src="./assets/js/main.js"></script>
