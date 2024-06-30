@@ -1,12 +1,14 @@
 /**
-  * Mixagem audio player
-  * version 3.0 - 13.12.2021 
+  * mambosinfinitos' jukebox
   * https://mambosinfinitos.pt
   */
 
 function mixagemAudioPlayer() {
 
-  const megaArray = [['1. Wavy The Pirate - Loka', '2. CREWELLA - Ainda é Longe ft. Ferry e Vando Streets'], ['2:43', '3:02']];
+  const megaArray = [
+    ['1. Wavy The Pirate - Loka', '2. Crewella - Ainda é Longe ft. Ferry e Vando Streets', '3. Shocks49 - Tardi Di Maz'], 
+    ['2:43', '3:02', '3:06']
+  ];
   const trackCount = megaArray[0].length;
   let larguraPlayer = 500;
 
@@ -14,8 +16,8 @@ function mixagemAudioPlayer() {
   const seeker = document.querySelector('#music-seeker');
   const progress = document.querySelector('#music-progress');
   const audioID = document.querySelector('#music-file');
-  const playPauseBtn = document.querySelector('#playpause');
-  const stopBtn = document.querySelector('#stop');
+  // const playPauseBtn = document.querySelector('#playpause');
+  // const stopBtn = document.querySelector('#stop');
   const playlistMainTable = document.querySelector('#playlist-table');
   const albumThumbnail = document.querySelector('#albumArtwork');
   const artworkClick = document.querySelector('#artwork-mouseover')
@@ -82,7 +84,7 @@ function mixagemAudioPlayer() {
       duraFaixa.classList.add('duracao-faixa', `faixa${i}`);                                     // adiciona a class ao <td> da duração da faixa
       i++;
     }
-    larguraPlayerOffset = playlistMainTable.offsetHeight * .7;                // *.7 serve para tornar a thumb mais quadrada
+    larguraPlayerOffset = playlistMainTable.offsetHeight * .8;                // *.7 serve para tornar a thumb mais quadrada
     (function () {
       document.querySelector('#music-clicker').style.width = `${larguraPlayer}px`;
       document.querySelector('#music-seeker').style.width = `${larguraPlayer}px`;
@@ -108,8 +110,8 @@ function mixagemAudioPlayer() {
 
   clicker.addEventListener('mousemove', mouseOver);                                 // função para atualizar a posição do seeker quando mouseoever
   clicker.addEventListener('click', mouseClick);                                    // função para atualizar a posição da faixa + progresso da faixa (.png)
-  playPauseBtn.addEventListener('click', () => { playpause(); playpauseArtwork(); progressBarTimer(); removeNowPlayingStyle(); nowPlayingStyle(); changeArtwork(); }); // função para o botão play/pause (play/pause + temporizador progress bar [se a música tiver parada, este fica em standby para poupar recursos])
-  stopBtn.addEventListener('click', stop);
+  // playPauseBtn.addEventListener('click', () => { playpause(); playpauseArtwork(); progressBarTimer(); removeNowPlayingStyle(); nowPlayingStyle(); changeArtwork(); }); // função para o botão play/pause (play/pause + temporizador progress bar [se a música tiver parada, este fica em standby para poupar recursos])
+  // stopBtn.addEventListener('click', stop);
   artworkClick.addEventListener('click', () => { playpause(); playpauseArtwork(); progressBarTimer(); removeNowPlayingStyle(); nowPlayingStyle(); changeArtwork(); });
 
   function getPosition(e) {                                                         // função para obter coordenada x do ponteiro do rato
@@ -188,10 +190,11 @@ function mixagemAudioPlayer() {
     changeArtwork(gridClassNameIndex);
   }
 
-  const gay1 = document.querySelector('.titulo-faixa' + '.faixa1');
-  const gay2 = document.querySelector('.titulo-faixa' + '.faixa2');
-
-  gay1.addEventListener('click', (e) => {
+  const trigger1 = document.querySelector('.titulo-faixa' + '.faixa1');
+  const trigger2 = document.querySelector('.titulo-faixa' + '.faixa2');
+  const trigger3 = document.querySelector('.titulo-faixa' + '.faixa3');
+  
+  trigger1.addEventListener('click', (e) => {
     console.log(e.target);
     let moka = e.target;
     console.log(moka.classList)
@@ -201,7 +204,17 @@ function mixagemAudioPlayer() {
     } else return
   });
 
-  gay2.addEventListener('click', (e) => {
+  trigger2.addEventListener('click', (e) => {
+    console.log(e.target);
+    let moka = e.target;
+    console.log(moka.classList)
+    let moka2 = moka.classList;
+    if (moka2.length <= 2) {
+      trackSelect(e);
+    } else return
+  });
+
+  trigger3.addEventListener('click', (e) => {
     console.log(e.target);
     let moka = e.target;
     console.log(moka.classList)
@@ -214,10 +227,10 @@ function mixagemAudioPlayer() {
 
   function playpauseArtwork() {
     if (!audioID.paused) {
-      artworkClick.innerHTML = 'ON';
+      artworkClick.innerHTML = '<i class="lni lni-pause"></i>';
     }                                              // se tiver em pausa, mete play
     else {
-      artworkClick.innerHTML = 'OFF';
+      artworkClick.innerHTML = '<i class="lni lni-play"></i>';
     };                                                        // se tiver em play, mete pausa
   }
 

@@ -13,16 +13,18 @@ body {
   margin: 0;
   padding: 0;
   background: var(--primary-color);
-  font-family: 'Open sans', sans-serif;
+  /* font-family: 'Open sans', sans-serif; */
+  font-family: 'Readex Pro', sans-serif;
   font-size: 1.3em;
   line-height: 1.5em;
+  color:#fff;
 }
 
 .container {
   max-width: 1000px;
   margin: 50px auto;
-  background: #fff;
-  padding: 20px;
+  background: #111;
+  padding: 40px;
   border-radius: 10px;
   height:500px;
 }
@@ -60,7 +62,7 @@ form button:hover {
 
 #music-clicker {
   height:20px;
-  background-color:rgba(5, 63, 253, 0.212);
+  background-color:rgba(0, 0, 0, 0.22);
   position:absolute;
   z-index: 3;
 }
@@ -76,7 +78,7 @@ form button:hover {
 #music-progress {
   position:absolute;
   z-index: 1;
-  background-color:indigo;
+  background-color:#f7f2e7;
   height:20px;
   width: 0px;
 }
@@ -91,7 +93,7 @@ form button:hover {
 }
 
 #playlist-table div {
-  border-bottom: 1px dashed rgb(209, 201, 201);
+  border-bottom: 1px dashed #f7f2e775;
 }
 
 #playlist-table div span {
@@ -117,13 +119,13 @@ form button:hover {
 }
 
 .titulo-faixa {
-  width: 80%;
+  width: 85%;
   font-size:10px;
   color:rgba(255, 255, 255, 0.459);
 }
 
 .duracao-faixa {
-  width:20%;
+  width:15%;
   font-size:10px;
   right:0;
   text-align: right;
@@ -131,13 +133,13 @@ form button:hover {
 }
 
 #playlist-table div span:first-child.now-playing {
-  color:rgb(240, 160, 12);
+  color: #f7f2e7;
   font-weight: bold;
   font-size:12px;
 }
 
 #playlist-table div span:last-child.now-playing {
-  color:rgb(253, 231, 132);
+  color: #f7f2e7;
   font-weight: bold;
   font-size:12px;
 }
@@ -148,10 +150,13 @@ form button:hover {
 }
 
 #albumArtwork {
-  background-image: url('../img/thumb0.jpg');
+  background-image: url('../img/thumb0.png');
   font-size:0px;
   color:white;
   cursor:pointer;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 #artwork-mouseover{
