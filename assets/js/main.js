@@ -5,50 +5,37 @@
 
 function mixagemAudioPlayer() {
 
-  const megaArray = [
-    ['1. Wavy The Pirate - Loka', '2. Crewella - Ainda é Longe ft. Ferry e Vando Streets', '3. Shocks49 - Tardi Di Maz'], 
-    ['2:43', '3:02', '3:06']
-  ];
-  const trackCount = megaArray[0].length;
-  let larguraPlayer = 500;
+  // Medidas necessárias para construção da grelha
+  const trackCount = 3;
+  const larguraPlayer = 495;
+  const larguraArtwork = 96;
 
-  const clicker = document.querySelector('#music-clicker');
-  const seeker = document.querySelector('#music-seeker');
-  const progress = document.querySelector('#music-progress');
   const audioID = document.querySelector('#music-file');
-  // const playPauseBtn = document.querySelector('#playpause');
-  // const stopBtn = document.querySelector('#stop');
-  const playlistMainTable = document.querySelector('#playlist-table');
-  const albumThumbnail = document.querySelector('#albumArtwork');
-  const artworkClick = document.querySelector('#artwork-mouseover')
+  const progress = document.querySelector('#music-progress');
 
-  // função construtura - <td> título da faixa
-  function pTituloFaixa(i) {
-    const pTituloFaixa = document.createElement('span');
-    pTituloFaixa.innerText = `${megaArray[0][i]}`;
-    return pTituloFaixa
-  }
 
-  // função construtura - <td> duração da faixa
-  function pDuraFaixa(i) {
-    const pDuraFaixa = document.createElement('span');
-    pDuraFaixa.innerText = `${megaArray[1][i]}`;
-    return pDuraFaixa
-  }
-
-  // função construtura - <tr>
+  // função construtura - <div> faixa
   function newTableRow() {
     const newTableRow = document.createElement('div');
     newTableRow.classList.add('trackRow');
     return newTableRow
   }
 
+  // função construtura - <span>  faixa
+  function pFaixa() {
+    const pTituloFaixa = document.createElement('span');
+    return pTituloFaixa
+  }
+
+
+  // função para obter o index da faixa a tocar
   function getAudioIDIndex() {
-    let audioIDSrc = audioID.src;
-    let audioIDIndex = audioIDSrc[audioIDSrc.length - 5];
+    let audioIDSrc = audioID.src;                                  // índice:               54321
+    let audioIDIndex = audioIDSrc[audioIDSrc.length - 5];         //nome do ficheiro  "audio1.mp3"
     return audioIDIndex
   }
 
+  // função para aplicar os estilos .now-playing
   function nowPlayingStyle() {
     let audioIDIndex = getAudioIDIndex();
     let audioIDPlaying = document.querySelector(`.titulo-faixa` + `.faixa${audioIDIndex}`);
@@ -57,6 +44,7 @@ function mixagemAudioPlayer() {
     audioIDPlayingDura.classList.add('now-playing');
   }
 
+  // função para remover os estilos .now-playing
   function removeNowPlayingStyle() {
     audioIDIndex = getAudioIDIndex();
     for (i = 1; i <= trackCount; i++) {
@@ -69,84 +57,49 @@ function mixagemAudioPlayer() {
     }
   }
 
-  // função manipuladora - adiciona os <td> de titulo e faixa ao <tr>
-  function playlistEntryInfo() {
-    let i = 1;
-    while (i <= trackCount) {
-
-      playlistMainTable.appendChild(newTableRow());                                 // adiciona uma nova <tr>
-      let linhaIndividual = playlistMainTable.lastChild;                            // seleciona a última <tr> introduzida
-      linhaIndividual.appendChild(pTituloFaixa(i - 1));                                  // adiciona o <td> do título da faixa ao <tr>
-      linhaIndividual.appendChild(pDuraFaixa(i - 1));                                    // adiciona o <td> da duração da faixa ao <tr>
-      let tituloFaixa = linhaIndividual.firstChild;                                 // seleciona o <td> do título da faixa
-      tituloFaixa.classList.add('titulo-faixa', `faixa${i}`);                                    // adiciona a class ao <td> do título da faixa
-      let duraFaixa = linhaIndividual.lastChild;                                    // seleciona o <td> da duração da faixa
-      duraFaixa.classList.add('duracao-faixa', `faixa${i}`);                                     // adiciona a class ao <td> da duração da faixa
-      i++;
-    }
-    larguraPlayerOffset = playlistMainTable.offsetHeight * .8;                // *.7 serve para tornar a thumb mais quadrada
-    (function () {
-      document.querySelector('#music-clicker').style.width = `${larguraPlayer}px`;
-      document.querySelector('#music-seeker').style.width = `${larguraPlayer}px`;
-      document.querySelector('#playlist-table').style.width = `${larguraPlayer - larguraPlayerOffset}px`;
-    })()
-  }
-  playlistEntryInfo();
-
-  function albumArtwork() {
-    albumThumbnail.style.width = `${larguraPlayerOffset}px`;
-  }
-  albumArtwork();
-
-  function autoplay() {
-    audioID.onended = () => {
-      nextTrack();
-      audioID.play();
-      clearInterval(timer);
-      progressBarTimer();
-    }
-  }
-  autoplay();
-
-  clicker.addEventListener('mousemove', mouseOver);                                 // função para atualizar a posição do seeker quando mouseoever
-  clicker.addEventListener('click', mouseClick);                                    // função para atualizar a posição da faixa + progresso da faixa (.png)
-  // playPauseBtn.addEventListener('click', () => { playpause(); playpauseArtwork(); progressBarTimer(); removeNowPlayingStyle(); nowPlayingStyle(); changeArtwork(); }); // função para o botão play/pause (play/pause + temporizador progress bar [se a música tiver parada, este fica em standby para poupar recursos])
-  // stopBtn.addEventListener('click', stop);
-  artworkClick.addEventListener('click', () => { playpause(); playpauseArtwork(); progressBarTimer(); removeNowPlayingStyle(); nowPlayingStyle(); changeArtwork(); });
-
+  // função para obter a posição do cursor, dentro do div
   function getPosition(e) {                                                         // função para obter coordenada x do ponteiro do rato
-    let rect = e.target.getBoundingClientRect();                                    // getBoundClienteRect é um objeto com as "geometrias" do objeto em relação à window
+    let rect = e.target.getBoundingClientRect();                                    // getBoundClienteRect é um objeto com as "geometrias" do elemento em relação à window
     let x = e.clientX - rect.left;                                                  // clientX é a posição x do rato aquando do evento; rect.left é a posição inicial x do elemento.   
     return x                                                                        // a diferença da operação anterior, é a posição x dentro do elemento
   }
 
+  // função para atualizar largura da progressbar
   function progressBar() {
     let position3 = audioID.currentTime / audioID.duration * larguraPlayer;              // % de faixa concluída, adaptada á largura do player
     progress.style.width = `${position3.toFixed(0)}px`;                              // atualiza a largura do progresso de acordo com a % da faixa concluída
-    console.log('stick ticking bro')
+    // console.log('Now playing: ' + document.querySelector(`.now-playing`).innerText);
   }
 
+  // timer para ir atualizando a progressbar
   function progressBarTimer() {
     if (!audioID.paused) { return timer = setInterval(progressBar, 200) }              // se a música estiver a toca, temporizador para atualizar o width da progress bar, 5x por segundo (a cada 200ms)
     else clearInterval(timer);                                                       // caso contrário, limpar o temporizador existente
   }
 
+  // função par atualizar o seeker com mouseover
   function mouseOver(e) {
+    const seeker = document.querySelector('#music-seeker');
     let mouseOverPos = getPosition(e);
     seeker.style.width = `${mouseOverPos.toFixed(0)}px`;                             // atualiza a largura do seeker de acordo com a posição do rato
   }
 
+  // função para atualizar o progresso ao clicar
   function mouseClick(e) {
     let mouseClickPos = getPosition(e);
     progress.style.width = `${mouseClickPos.toFixed(0)}px`;                          // atualiza a largura do progress de acordo com a posição do rato
     audioID.currentTime = (mouseClickPos / larguraPlayer) * audioID.duration;            // coloca o a música no momento igual ao da posição do rato (posição em % do rato no elemento =» posição em % na música)
   }
 
+  // play/pause
   function playpause() {
-    if (audioID.paused) { audioID.play() }                                              // se tiver em pausa, mete play
-    else { audioID.pause(); };                                                        // se tiver em play, mete pausa
+    if (audioID.paused) { audioID.play(); }                                              // se tiver em pausa, mete play
+    else { audioID.pause();                                                                // se tiver em play, mete pausa
+      // console.log('playback paused')
+    };                            
   }
 
+  // stop
   function stop() {
     try {
       audioID.pause();                                                                  // mete a música em pausa
@@ -157,6 +110,44 @@ function mixagemAudioPlayer() {
     } catch (err) { }
   }
 
+  // função construtora - adiciona os <spans> de titulo e faixa ao <div> da faixa. Adiciona o <div> da faixa, ao <div> da playlist.
+  function playlistEntryInfo() {
+    let i = 1;
+    const playlistMainTable = document.querySelector('#playlist-table');
+    while (i <= trackCount) {
+
+      playlistMainTable.appendChild(newTableRow());                                 // adiciona uma nova <div>
+      let linhaIndividual = playlistMainTable.lastChild;                            // seleciona a última <div> introduzida
+      linhaIndividual.appendChild(pFaixa());                             // adiciona o <span> do título da faixa ao <div> da faixa
+      linhaIndividual.appendChild(pFaixa());                               // adiciona o <span> da duração da faixa ao <div> da faixa
+      let tituloFaixa = linhaIndividual.firstChild;                                 // seleciona o <span> do título da faixa
+      tituloFaixa.classList.add('titulo-faixa', `faixa${i}`);                       // adiciona a class ao <span> do título da faixa
+      let duraFaixa = linhaIndividual.lastChild;                                    // seleciona o <span> da duração da faixa
+      duraFaixa.classList.add('duracao-faixa', `faixa${i}`);                        // adiciona a class ao <span> da duração da faixa
+      i++;                                                                          // loop
+    }
+
+    locales();                                                                      // executa a função do json para buscar a tracklist, depois de composta a playlist
+
+    // função para definir as diferentes larguras do player 
+    (function () {
+      document.querySelector('#music-clicker').style.width = `${larguraPlayer}px`;
+      document.querySelector('#music-seeker').style.width = `${larguraPlayer}px`;
+      document.querySelector('#playlist-table').style.width = `${larguraPlayer - larguraArtwork}px`;
+    })()
+  }
+
+  // Função para começar a faixa seguinte tocar automaticamente
+  function autoplay() {
+    audioID.onended = () => {
+      nextTrack();
+      audioID.play();
+      clearInterval(timer);
+      progressBarTimer();
+    }
+  }
+
+  // função para alterar o src do audio a tocar
   function nextTrack() {
     let audioIDIndex = getAudioIDIndex();
     audioIDIndex++;
@@ -175,7 +166,7 @@ function mixagemAudioPlayer() {
     }
   }
 
-
+  // função para atualizar tudo, de acordo com a faixa que foi selecionada 
   function trackSelect(e) {
     let gridTarget = e.target;
     let gridClassName = gridTarget.className;
@@ -190,41 +181,7 @@ function mixagemAudioPlayer() {
     changeArtwork(gridClassNameIndex);
   }
 
-  const trigger1 = document.querySelector('.titulo-faixa' + '.faixa1');
-  const trigger2 = document.querySelector('.titulo-faixa' + '.faixa2');
-  const trigger3 = document.querySelector('.titulo-faixa' + '.faixa3');
-  
-  trigger1.addEventListener('click', (e) => {
-    console.log(e.target);
-    let moka = e.target;
-    console.log(moka.classList)
-    let moka2 = moka.classList;
-    if (moka2.length <= 2) {
-      trackSelect(e);
-    } else return
-  });
-
-  trigger2.addEventListener('click', (e) => {
-    console.log(e.target);
-    let moka = e.target;
-    console.log(moka.classList)
-    let moka2 = moka.classList;
-    if (moka2.length <= 2) {
-      trackSelect(e);
-    } else return
-  });
-
-  trigger3.addEventListener('click', (e) => {
-    console.log(e.target);
-    let moka = e.target;
-    console.log(moka.classList)
-    let moka2 = moka.classList;
-    if (moka2.length <= 2) {
-      trackSelect(e);
-    } else return
-  });
-
-
+  // função para atualizar o icon play/pause do album
   function playpauseArtwork() {
     if (!audioID.paused) {
       artworkClick.innerHTML = '<i class="lni lni-pause"></i>';
@@ -234,8 +191,9 @@ function mixagemAudioPlayer() {
     };                                                        // se tiver em play, mete pausa
   }
 
+  // função para alterar o album de acordo com a faixa a tocar
   function changeArtwork(i) {
-    if (i === undefined) { 
+    if (i === undefined) {
       let indexForThumb = getAudioIDIndex();
       albumThumbnail.style.backgroundImage = `url('assets/img/thumb${indexForThumb}.jpg')`;
     }
@@ -243,6 +201,65 @@ function mixagemAudioPlayer() {
       albumThumbnail.style.backgroundImage = `url('assets/img/thumb${i}.jpg')`;
     }
   }
+
+  // função para obter tracklist.json
+  function locales() {
+
+    fetch('assets/js/tracklist.json')
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        appendData(data);
+      })
+      .catch(function (err) {
+        // console.log('error: ' + err);
+      }); 
+
+    function appendData(data) {
+      for (let i = 1; i <= data.length; i++) {
+        document.querySelector(`.titulo-faixa` + `.faixa${i}`).innerText = data[i - 1].trackName;
+        document.querySelector(`.duracao-faixa` + `.faixa${i}`).innerText = data[i - 1].trackLenght;
+      }
+    }
+  }
+
+  playlistEntryInfo();  // desenha a grelha
+  autoplay();           // autoplay next track 
+
+  // Gerador de eventlistener para cada caixa
+  (function () {
+    let eventArray = [];
+    for (i = 1; i <= trackCount; i++) {
+      eventArray[i] = document.querySelector('.titulo-faixa' + `.faixa${i}`);
+      eventArray[i].addEventListener('click', (e) => {
+        let eTarget = e.target;
+        let classList = eTarget.classList;
+        if (classList.length <= 2) {       // se o span tiver 2 ou menos classes (ou seja, não tem o now-playing)
+          trackSelect(e);
+        } else return
+      });
+    }
+  })();
+
+  const clicker = document.querySelector('#music-clicker');
+  const artworkClick = document.querySelector('#artwork-mouseover')
+  const albumThumbnail = document.querySelector('#albumArtwork');
+
+  clicker.addEventListener('mousemove', mouseOver);                                 // função para atualizar a posição do seeker quando mouseoever
+  clicker.addEventListener('click', mouseClick);                                    // função para atualizar a posição da faixa + progresso da faixa (.png)
+  artworkClick.addEventListener('click', () => {                                    // função para atualizar tudo ao clicar no album:
+    playpause();                                                                    // play/pause 
+    playpauseArtwork();                                                             // Atualiza o icon do play/pause
+    progressBarTimer();                                                             // re/começa o timer                                                    
+    nowPlayingStyle();                                                              // adiciona o .now-playing caso começemos a playlist através do album
+    changeArtwork();                                                                // altera o album thumb caso começemos a playlist através do album
+  });
+
+  function albumArtwork() {
+    albumThumbnail.style.width = `${larguraArtwork}px`;
+  }
+  albumArtwork();
 
 }
 
